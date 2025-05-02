@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- [Head] start -->
-
 <head>
   <!-- [Google Font] Family -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" id="main-font-link">
@@ -30,18 +29,11 @@
       align-items: center;
       border-radius: 8px;
     }
-
-
   </style>
-
-
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
-
 <body>
-
-
 
 <div class="loader-bg">
   <div class="loader-track">
@@ -61,44 +53,45 @@
 
           <!-- 회원가입 1번째 화면 -->
           <div id="welcome-screen" style="
-          position: fixed;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          background-color: white;
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 2rem;
-          font-weight: bold;
-          opacity: 1;
-          transition: opacity 1s ease;
-          ">
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: white;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 1;
+            transition: opacity 1s ease;
+            ">
             어서오세요 마인드북입니다 ^_^
           </div>
 
           <!-- 회원가입 2번째 화면 -->
-          <div class="container mt-5 text-center" id="preference-section">
+          <div class="container mt-5 text-center" id="section2">
             <h4 class="mb-4">우리 서로 알아가봐요~</h4>
-            <div class="preference-buttons">
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">소설</button>
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">실용서</button>
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">청소션/어린이</button>
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">만화</button>
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">잡지</button>
-              <button class="btn btn-outline-primary" onclick="selectPreference(this)">기타</button>
+            <div class="preference-buttons" id="categoryButtons2">
+
             </div>
           </div>
             
           <!-- 회원가입 3번째 화면 -->
-          <div class="container mt-5" id="register-section" style="display: none;">
+          <div class="container mt-5" id="section3" style="display: none;">
             <h4 class="mb-4">선택해주셔서 감사합니다 ^_^ 당신에 대해서 더 알고 싶어요~!</h4>
-            <!-- 동적으로 버튼을 생성할 컨테이너 -->
-            <div class="preference-buttons" id="categoryButtons">
-              <!-- API에서 받아온 카테고리별 버튼이 여기에 추가됩니다 -->
+            <div class="preference-buttons" id="categoryButtons3">
+
             </div>
           </div>
 
+          <!-- 회원가입 4번째 화면 -->
+          <div class="container mt-5" id="section4" style="display: none;">
+            <h4 class="mb-4"></h4>
+            <div class="preference-buttons" id="categoryButtons4">
+
+            </div>
+          </div>
 
 <!-- 
             <div class="d-flex justify-content-between align-items-end mb-4">
@@ -371,10 +364,9 @@
 
 
 <script>
+  //첫 화면
   window.addEventListener('load', () => {
     const welcome = document.getElementById('welcome-screen');
-    const register2 = document.getElementById('register-screen2');
-
     setTimeout(() => {
       welcome.style.opacity = '0';
     }, 500); // 2초 후 페이드아웃 시작
@@ -382,64 +374,138 @@
     setTimeout(() => {
       welcome.style.display = 'none';
     }, 3000); // 페이드아웃 후 완전히 제거
-
-
-    register2.style.opacity = '0';
   });
 
-
   function selectPreference(button) {
-    // 선택된 취향 가져오기
     const preference = button.innerText;
-    console.log('선택한 취향:', preference);
 
     // 현재 화면 숨기기
-    const prefSection = document.getElementById('preference-section');
+    const prefSection = document.getElementById('section2');
     prefSection.style.display = 'none';
 
     // 다음 화면 보이기
-    const registerSection = document.getElementById('register-section');
+    const registerSection = document.getElementById('section3');
     registerSection.style.display = 'block';
   }
-
-
 </script>
 
 
 <script>
-  // API에서 카테고리 목록을 가져와서 동적으로 버튼 생성
-  fetch("/api/categories")
+  fetch("/api/getFirstCategorys")
     .then(res => res.json())
     .then(data => {
-      const container = document.getElementById("categoryButtons");
-      
-      // 컨테이너 초기화 (필요시)
+      const container = document.getElementById("categoryButtons2");
       container.innerHTML = "";
       
-      // data는 배열 형태로 [{ name: "소설" }, { name: "실용서" }, ...] 형태라고 가정
       data.forEach(category => {
         // 버튼 요소 생성
         const btn = document.createElement("button");
-        btn.className = "btn btn-outline-primary"; // 필요한 클래스로 설정
-        btn.textContent = category.name;             // 버튼 텍스트: 카테고리 이름
+        btn.className = "btn btn-outline-primary";
+        btn.textContent = category.name;
+        btn.value = category.number;
         
-        // 선택 처리 핸들러 추가 (원하는 함수명을 사용)
+        // 선택 처리 핸들러 추가
         btn.onclick = function() {
           selectCategory(this);
         };
 
-        // 생성된 버튼을 컨테이너에 추가
         container.appendChild(btn);
       });
     })
     .catch(error => console.log("Error fetching categories:", error));
   
-  // 카테고리 버튼 클릭 시 실행될 함수 예제
+  // 2번째 카데고리 눌렀을 때
   function selectCategory(button) {
     const selectedCategory = button.textContent;
+    const selectedNumber = button.value;
     console.log("Selected category:", selectedCategory);
-    // 추가적인 처리(예: 사용자 선택 값을 저장하거나, 다음 화면으로 전환 등)를 할 수 있습니다.
+    console.log("selected number : ", selectedNumber);
+
+    document.getElementById('section2').style.display = 'none';
+    document.getElementById('section3').style.display = 'block';
+
+    fetch(`/api/getSecondCategorys?number=${selectedNumber}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("categoryButtons3");
+      container.innerHTML = "";
+      data.forEach(category => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary";
+        btn.id = category.class; //중분류 값 넘기기
+        btn.value = category.number; //대분류 값 넘기기
+        btn.textContent = category.name;
+        btn.onclick = function() { thirdCategory(this); };
+        container.appendChild(btn);
+        
+      });
+
+      console.log("하위 카테고리 목록:", data);
+    })
+    .catch(err => console.error("Error fetching subcategories:", err));
   }
+
+  // 3번째 카데고리 눌렀을 때
+  function thirdCategory(button) {
+    const selectedCategory = button.textContent;
+    const selectedNumber = button.value;
+    const selectedClass = button.id;
+    console.log("Selected category:", selectedCategory);
+    console.log("selected number : ", selectedNumber);
+
+    document.getElementById('section3').style.display = 'none';
+    document.getElementById('section4').style.display = 'block';
+
+    fetch(`/api/getThirdCategorys?number=${selectedNumber}&class=${selectedClass}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("categoryButtons4");
+      container.innerHTML = "";
+      data.forEach(category => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary";
+        btn.textContent = category.name;
+        btn.value = category.name;
+        btn.onclick = function() { fourCategory(this); };
+        container.appendChild(btn);
+      });
+
+      console.log("하위 카테고리 목록:", data);
+    })
+    .catch(err => console.error("Error fetching subcategories:", err));
+  }
+
+  // 4번째 카데고리 눌렀을 때
+  function fourCategory(button) {
+    const selectedCategory = button.textContent;
+    const selectedName = button.value;
+    const encoded = encodeURIComponent(selectedName); // 토익%20%2F%20토플%20%2F%20IELTS%20400
+
+    console.log("Selected category:", selectedCategory);
+    console.log("selected name : ", selectedName);
+
+    document.getElementById('section3').style.display = 'none';
+    document.getElementById('section4').style.display = 'block';
+
+    fetch(`/api/getFamousWorks?name=${encoded}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("categoryButtons4");
+      container.innerHTML = "";
+      data.forEach(category => {
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary";
+        btn.textContent = category.name;
+        btn.value = category.name;
+        btn.onclick = function() { fourCategory(this); };
+        container.appendChild(btn);
+      });
+
+      console.log("하위 카테고리 목록:", data);
+    })
+    .catch(err => console.error("Error fetching subcategories:", err));
+  }
+
 </script>
 
 </body>
