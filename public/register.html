@@ -16,12 +16,33 @@
   <!-- [Template CSS Files] -->
   <link rel="stylesheet" href="assets/css/style.css" id="main-style-link" >
   <link rel="stylesheet" href="assets/css/style-preset.css" >
+  <style>
+    .preference-buttons button {
+      width: 120px;
+      height: 120px;
+      font-size: 1.1rem;
+      margin: 10px;
+      padding: 10px;
+      white-space: nowrap;
+      text-align: center;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+    }
+
+
+  </style>
+
+
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
 
 <body>
-  <!-- [ Pre-loader ] start -->
+
+
+
 <div class="loader-bg">
   <div class="loader-track">
     <div class="loader-fill"></div>
@@ -36,6 +57,50 @@
         </div>
         <div class="card my-5">
           <div class="card-body">
+
+
+          <!-- 회원가입 1번째 화면 -->
+          <div id="welcome-screen" style="
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background-color: white;
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          font-weight: bold;
+          opacity: 1;
+          transition: opacity 1s ease;
+          ">
+            어서오세요 마인드북입니다 ^_^
+          </div>
+
+          <!-- 회원가입 2번째 화면 -->
+          <div class="container mt-5 text-center" id="preference-section">
+            <h4 class="mb-4">우리 서로 알아가봐요~</h4>
+            <div class="preference-buttons">
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">소설</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">실용서</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">청소션/어린이</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">만화</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">잡지</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">기타</button>
+            </div>
+          </div>
+            
+          <!-- 회원가입 3번째 화면 -->
+          <div class="container mt-5" id="register-section" style="display: none;">
+            <h4 class="mb-4">선택해주셔서 감사합니다 ^_^ 당신에 대해서 더 알고 싶어요~!</h4>
+            <!-- 동적으로 버튼을 생성할 컨테이너 -->
+            <div class="preference-buttons" id="categoryButtons">
+              <!-- API에서 받아온 카테고리별 버튼이 여기에 추가됩니다 -->
+            </div>
+          </div>
+
+
+<!-- 
             <div class="d-flex justify-content-between align-items-end mb-4">
               <h3 class="mb-0"><b>Sign up</b></h3>
               <a href="#" class="link-primary">Already have an account?</a>
@@ -95,8 +160,14 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </div> -->
             
+
+
+
+
+
+
           </div>
         </div>
         <div class="auth-footer row">
@@ -295,6 +366,82 @@
     </div>
   </div>
 </div>
+
+
+
+
+<script>
+  window.addEventListener('load', () => {
+    const welcome = document.getElementById('welcome-screen');
+    const register2 = document.getElementById('register-screen2');
+
+    setTimeout(() => {
+      welcome.style.opacity = '0';
+    }, 500); // 2초 후 페이드아웃 시작
+
+    setTimeout(() => {
+      welcome.style.display = 'none';
+    }, 3000); // 페이드아웃 후 완전히 제거
+
+
+    register2.style.opacity = '0';
+  });
+
+
+  function selectPreference(button) {
+    // 선택된 취향 가져오기
+    const preference = button.innerText;
+    console.log('선택한 취향:', preference);
+
+    // 현재 화면 숨기기
+    const prefSection = document.getElementById('preference-section');
+    prefSection.style.display = 'none';
+
+    // 다음 화면 보이기
+    const registerSection = document.getElementById('register-section');
+    registerSection.style.display = 'block';
+  }
+
+
+</script>
+
+
+<script>
+  // API에서 카테고리 목록을 가져와서 동적으로 버튼 생성
+  fetch("/api/categories")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("categoryButtons");
+      
+      // 컨테이너 초기화 (필요시)
+      container.innerHTML = "";
+      
+      // data는 배열 형태로 [{ name: "소설" }, { name: "실용서" }, ...] 형태라고 가정
+      data.forEach(category => {
+        // 버튼 요소 생성
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary"; // 필요한 클래스로 설정
+        btn.textContent = category.name;             // 버튼 텍스트: 카테고리 이름
+        
+        // 선택 처리 핸들러 추가 (원하는 함수명을 사용)
+        btn.onclick = function() {
+          selectCategory(this);
+        };
+
+        // 생성된 버튼을 컨테이너에 추가
+        container.appendChild(btn);
+      });
+    })
+    .catch(error => console.log("Error fetching categories:", error));
+  
+  // 카테고리 버튼 클릭 시 실행될 함수 예제
+  function selectCategory(button) {
+    const selectedCategory = button.textContent;
+    console.log("Selected category:", selectedCategory);
+    // 추가적인 처리(예: 사용자 선택 값을 저장하거나, 다음 화면으로 전환 등)를 할 수 있습니다.
+  }
+</script>
+
 </body>
 <!-- [Body] end -->
 
