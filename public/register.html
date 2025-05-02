@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- [Head] start -->
+
+<head>
+  <!-- [Google Font] Family -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" id="main-font-link">
+  <!-- [Tabler Icons] https://tablericons.com -->
+  <link rel="stylesheet" href="assets/fonts/tabler-icons.min.css" >
+  <!-- [Feather Icons] https://feathericons.com -->
+  <link rel="stylesheet" href="assets/fonts/feather.css" >
+  <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+  <link rel="stylesheet" href="assets/fonts/fontawesome.css" >
+  <!-- [Material Icons] https://fonts.google.com/icons -->
+  <link rel="stylesheet" href="assets/fonts/material.css" >
+  <!-- [Template CSS Files] -->
+  <link rel="stylesheet" href="assets/css/style.css" id="main-style-link" >
+  <link rel="stylesheet" href="assets/css/style-preset.css" >
+  <style>
+    .preference-buttons button {
+      width: 120px;
+      height: 120px;
+      font-size: 1.1rem;
+      margin: 10px;
+      padding: 10px;
+      white-space: nowrap;
+      text-align: center;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+    }
+
+
+  </style>
+
+
+</head>
+<!-- [Head] end -->
+<!-- [Body] Start -->
+
+<body>
+
+
+
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+  <div class="auth-main">
+    <div class="auth-wrapper v3">
+      <div class="auth-form">
+        <div class="auth-header">
+          <a href="#"><img src="../assets/images/logo-dark.svg" alt="img"></a>
+        </div>
+        <div class="card my-5">
+          <div class="card-body">
+
+
+          <!-- 회원가입 1번째 화면 -->
+          <div id="welcome-screen" style="
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background-color: white;
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          font-weight: bold;
+          opacity: 1;
+          transition: opacity 1s ease;
+          ">
+            어서오세요 마인드북입니다 ^_^
+          </div>
+
+          <!-- 회원가입 2번째 화면 -->
+          <div class="container mt-5 text-center" id="preference-section">
+            <h4 class="mb-4">우리 서로 알아가봐요~</h4>
+            <div class="preference-buttons">
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">소설</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">실용서</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">청소션/어린이</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">만화</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">잡지</button>
+              <button class="btn btn-outline-primary" onclick="selectPreference(this)">기타</button>
+            </div>
+          </div>
+            
+          <!-- 회원가입 3번째 화면 -->
+          <div class="container mt-5" id="register-section" style="display: none;">
+            <h4 class="mb-4">선택해주셔서 감사합니다 ^_^ 당신에 대해서 더 알고 싶어요~!</h4>
+            <!-- 동적으로 버튼을 생성할 컨테이너 -->
+            <div class="preference-buttons" id="categoryButtons">
+              <!-- API에서 받아온 카테고리별 버튼이 여기에 추가됩니다 -->
+            </div>
+          </div>
+
+
+<!-- 
+            <div class="d-flex justify-content-between align-items-end mb-4">
+              <h3 class="mb-0"><b>Sign up</b></h3>
+              <a href="#" class="link-primary">Already have an account?</a>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">First Name*</label>
+                  <input type="text" class="form-control" placeholder="First Name">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-control" placeholder="Last Name">
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label">Company</label>
+              <input type="text" class="form-control" placeholder="Company">
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label">Email Address*</label>
+              <input type="email" class="form-control" placeholder="Email Address">
+            </div>
+            <div class="form-group mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" placeholder="Password">
+            </div>
+            <p class="mt-4 text-sm text-muted">By Signing up, you agree to our <a href="#" class="text-primary"> Terms of Service </a> and <a href="#" class="text-primary"> Privacy Policy</a></p>
+            <div class="d-grid mt-3">
+              <button type="button" class="btn btn-primary">Create Account</button>
+            </div>
+            <div class="saprator mt-3">
+              <span>Sign up with</span>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <div class="d-grid">
+                  <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                    <img src="../assets/images/authentication/google.svg" alt="img"> <span class="d-none d-sm-inline-block"> Google</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                    <img src="../assets/images/authentication/twitter.svg" alt="img"> <span class="d-none d-sm-inline-block"> Twitter</span>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                    <img src="../assets/images/authentication/facebook.svg" alt="img"> <span class="d-none d-sm-inline-block"> Facebook</span>
+                  </button>
+                </div>
+              </div>
+            </div> -->
+            
+
+
+
+
+
+
+          </div>
+        </div>
+        <div class="auth-footer row">
+          <!-- <div class=""> -->
+            <div class="col my-1">
+              <p class="m-0">Copyright © <a href="#">Codedthemes</a></p>
+            </div>
+            <div class="col-auto my-1">
+              <ul class="list-inline footer-link mb-0">
+                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                <li class="list-inline-item"><a href="#">Contact us</a></li>
+              </ul>
+            </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+  
+<div class="offcanvas pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
+  <div class="offcanvas-header bg-primary">
+    <h5 class="offcanvas-title text-white">Mantis Customizer</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="pct-body" style="height: calc(100% - 60px)">
+    <div class="offcanvas-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <a class="btn border-0 text-start w-100" data-bs-toggle="collapse" href="#pctcustcollapse1">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-layout-sidebar f-18"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">Theme Layout</h6>
+                <span>Choose your layout</span>
+              </div>
+              <i class="ti ti-chevron-down"></i>
+            </div>
+          </a>
+          <div class="collapse show" id="pctcustcollapse1">
+            <div class="pct-content">
+              <div class="pc-rtl">
+                <p class="mb-1">Direction</p>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="layoutmodertl">
+                  <label class="form-check-label" for="layoutmodertl">RTL</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <a class="btn border-0 text-start w-100" data-bs-toggle="collapse" href="#pctcustcollapse2">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-brush f-18"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">Theme Mode</h6>
+                <span>Choose light or dark mode</span>
+              </div>
+              <i class="ti ti-chevron-down"></i>
+            </div>
+          </a>
+          <div class="collapse show" id="pctcustcollapse2">
+            <div class="pct-content">
+              <div class="theme-color themepreset-color theme-layout">
+                <a href="#!" class="active" onclick="layout_change('light')" data-value="false"
+                  ><span><img src="../assets/images/customization/default.svg" alt="img"></span><span>Light</span></a
+                >
+                <a href="#!" class="" onclick="layout_change('dark')" data-value="true"
+                  ><span><img src="../assets/images/customization/dark.svg" alt="img"></span><span>Dark</span></a
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <a class="btn border-0 text-start w-100" data-bs-toggle="collapse" href="#pctcustcollapse3">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-color-swatch f-18"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">Color Scheme</h6>
+                <span>Choose your primary theme color</span>
+              </div>
+              <i class="ti ti-chevron-down"></i>
+            </div>
+          </a>
+          <div class="collapse show" id="pctcustcollapse3">
+            <div class="pct-content">
+              <div class="theme-color preset-color">
+                <a href="#!" class="active" data-value="preset-1"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 1</span></a
+                >
+                <a href="#!" class="" data-value="preset-2"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 2</span></a
+                >
+                <a href="#!" class="" data-value="preset-3"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 3</span></a
+                >
+                <a href="#!" class="" data-value="preset-4"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 4</span></a
+                >
+                <a href="#!" class="" data-value="preset-5"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 5</span></a
+                >
+                <a href="#!" class="" data-value="preset-6"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 6</span></a
+                >
+                <a href="#!" class="" data-value="preset-7"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 7</span></a
+                >
+                <a href="#!" class="" data-value="preset-8"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 8</span></a
+                >
+                <a href="#!" class="" data-value="preset-9"
+                  ><span><img src="../assets/images/customization/theme-color.svg" alt="img"></span><span>Theme 9</span></a
+                >
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item pc-boxcontainer">
+          <a class="btn border-0 text-start w-100" data-bs-toggle="collapse" href="#pctcustcollapse4">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-border-inner f-18"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">Layout Width</h6>
+                <span>Choose fluid or container layout</span>
+              </div>
+              <i class="ti ti-chevron-down"></i>
+            </div>
+          </a>
+          <div class="collapse show" id="pctcustcollapse4">
+            <div class="pct-content">
+              <div class="theme-color themepreset-color boxwidthpreset theme-container">
+                <a href="#!" class="active" onclick="change_box_container('false')" data-value="false"><span><img src="../assets/images/customization/default.svg" alt="img"></span><span>Fluid</span></a>
+                <a href="#!" class="" onclick="change_box_container('true')" data-value="true"><span><img src="../assets/images/customization/container.svg" alt="img"></span><span>Container</span></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <a class="btn border-0 text-start w-100" data-bs-toggle="collapse" href="#pctcustcollapse5">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-typography f-18"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">Font Family</h6>
+                <span>Choose your font family.</span>
+              </div>
+              <i class="ti ti-chevron-down"></i>
+            </div>
+          </a>
+          <div class="collapse show" id="pctcustcollapse5">
+            <div class="pct-content">
+              <div class="theme-color fontpreset-color">
+                <a href="#!" class="active" onclick="font_change('Public-Sans')" data-value="Public-Sans"
+                  ><span>Aa</span><span>Public Sans</span></a
+                >
+                <a href="#!" class="" onclick="font_change('Roboto')" data-value="Roboto"><span>Aa</span><span>Roboto</span></a>
+                <a href="#!" class="" onclick="font_change('Poppins')" data-value="Poppins"><span>Aa</span><span>Poppins</span></a>
+                <a href="#!" class="" onclick="font_change('Inter')" data-value="Inter"><span>Aa</span><span>Inter</span></a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="collapse show">
+            <div class="pct-content">
+              <div class="d-grid">
+                <button class="btn btn-light-danger" id="layoutreset">Reset Layout</button>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  window.addEventListener('load', () => {
+    const welcome = document.getElementById('welcome-screen');
+    const register2 = document.getElementById('register-screen2');
+
+    setTimeout(() => {
+      welcome.style.opacity = '0';
+    }, 500); // 2초 후 페이드아웃 시작
+
+    setTimeout(() => {
+      welcome.style.display = 'none';
+    }, 3000); // 페이드아웃 후 완전히 제거
+
+
+    register2.style.opacity = '0';
+  });
+
+
+  function selectPreference(button) {
+    // 선택된 취향 가져오기
+    const preference = button.innerText;
+    console.log('선택한 취향:', preference);
+
+    // 현재 화면 숨기기
+    const prefSection = document.getElementById('preference-section');
+    prefSection.style.display = 'none';
+
+    // 다음 화면 보이기
+    const registerSection = document.getElementById('register-section');
+    registerSection.style.display = 'block';
+  }
+
+
+</script>
+
+
+<script>
+  // API에서 카테고리 목록을 가져와서 동적으로 버튼 생성
+  fetch("/api/categories")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("categoryButtons");
+      
+      // 컨테이너 초기화 (필요시)
+      container.innerHTML = "";
+      
+      // data는 배열 형태로 [{ name: "소설" }, { name: "실용서" }, ...] 형태라고 가정
+      data.forEach(category => {
+        // 버튼 요소 생성
+        const btn = document.createElement("button");
+        btn.className = "btn btn-outline-primary"; // 필요한 클래스로 설정
+        btn.textContent = category.name;             // 버튼 텍스트: 카테고리 이름
+        
+        // 선택 처리 핸들러 추가 (원하는 함수명을 사용)
+        btn.onclick = function() {
+          selectCategory(this);
+        };
+
+        // 생성된 버튼을 컨테이너에 추가
+        container.appendChild(btn);
+      });
+    })
+    .catch(error => console.log("Error fetching categories:", error));
+  
+  // 카테고리 버튼 클릭 시 실행될 함수 예제
+  function selectCategory(button) {
+    const selectedCategory = button.textContent;
+    console.log("Selected category:", selectedCategory);
+    // 추가적인 처리(예: 사용자 선택 값을 저장하거나, 다음 화면으로 전환 등)를 할 수 있습니다.
+  }
+</script>
+
+</body>
+<!-- [Body] end -->
+
+</html>
