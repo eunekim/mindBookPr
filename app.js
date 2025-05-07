@@ -32,18 +32,16 @@ app.get("/api/getThirdCategorys", mongoController.getThirdCategorys);
 // Route to handle requests for famous works based on category
 app.get('/api/getFamousWorks', async (req, res) => {
   console.log("1", req.query.name);
-
   const category = req.query.name;
   console.log("1", category);
   if (!category) {
     return res.status(400).json({ error: 'Category is required' });
   }
 
+  //mongo.js 함수로 카테고리 값 갖고 연결
   const works = await mongoController.getFamousWorks(category);
   res.json({ works });
 });
-
-
 
 // 서버 시작
 app.listen(PORT, () => {
