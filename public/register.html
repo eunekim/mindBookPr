@@ -87,11 +87,16 @@
 
           <!-- 회원가입 4번째 화면 -->
           <div class="container mt-5" id="section4" style="display: none;">
+<<<<<<< HEAD
             <h4 class="mb-4">4번째 화면이에요.</h4>
+=======
+            <h4 class="mb-4"></h4>
+>>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
             <div class="preference-buttons" id="categoryButtons4">
 
             </div>
           </div>
+<<<<<<< HEAD
 
           <!-- 회원가입 5번째 화면 -->
           <div class="container mt-5" id="section5" style="display: none;">
@@ -100,6 +105,8 @@
 
             </div>
           </div>
+=======
+>>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
 
 <!-- 
             <div class="d-flex justify-content-between align-items-end mb-4">
@@ -368,9 +375,6 @@
   </div>
 </div>
 
-
-
-
 <script>
   //첫 화면
   window.addEventListener('load', () => {
@@ -483,7 +487,10 @@
     .catch(err => console.error("Error fetching subcategories:", err));
   }
 
+<<<<<<< HEAD
   // 4번째 카데고리 눌렀을 때
+=======
+>>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
   function fourCategory(button) {
   const selectedCategory = button.textContent;
   const selectedName = button.value;
@@ -501,12 +508,18 @@
       const container = document.getElementById("categoryButtons4");
       container.innerHTML = "";
 
+<<<<<<< HEAD
       console.log(works);
 
       if (!Array.isArray(works) || works.length === 0) {
         container.innerHTML = "<p>관련 도서를 찾지 못했습니다.</p>";
         console.log("이미지 실패");
 
+=======
+      if (!Array.isArray(works) || works.length === 0) {
+        container.innerHTML = "<p>관련 도서를 찾지 못했습니다.</p>";
+        console.log("이미지 실패");
+>>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
         return;
       }
 
