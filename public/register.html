@@ -30,6 +30,20 @@
       border-radius: 8px;
     }
   </style>
+  <style>
+    .hover-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 6px;
+    }
+  
+    .hover-card:hover {
+      background-color: #f9f9f9;
+      border-color: #007bff;
+      box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+    }
+  </style>
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -45,7 +59,7 @@
     <div class="auth-wrapper v3">
       <div class="auth-form">
         <div class="auth-header">
-          <a href="#"><img src="../assets/images/logo-dark.svg" alt="img"></a>
+          <a href="#"><img src="/assets/images/mindbook_logo.png" width="150" height="50" alt="img"></a>
         </div>
         <div class="card my-5">
           <div class="card-body">
@@ -87,26 +101,87 @@
 
           <!-- 회원가입 4번째 화면 -->
           <div class="container mt-5" id="section4" style="display: none;">
-<<<<<<< HEAD
-            <h4 class="mb-4">4번째 화면이에요.</h4>
-=======
-            <h4 class="mb-4"></h4>
->>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
+            <h4 class="mb-4">마음에 드는 카테고리를 선택해주세요 ~ ^^</h4>
             <div class="preference-buttons" id="categoryButtons4">
 
             </div>
           </div>
-<<<<<<< HEAD
 
           <!-- 회원가입 5번째 화면 -->
           <div class="container mt-5" id="section5" style="display: none;">
-            <h4 class="mb-4">5번째 화면이에요.</h4>
+            <h4 class="mb-4">독자님이 좋아하실만한 도서를 가져와봤어요!</h4>
             <div class="preference-buttons" id="categoryButtons5">
 
             </div>
           </div>
-=======
->>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
+
+          <!-- 회원가입 6번째 화면 -->
+          <div class="container mt-5" id="section6" style="display: none;">
+            <h4 class="mb-4">독자님의 성별을 알려주세요~ 🐘</h4>
+            <div class="preference-buttons" id="categoryButtons6">
+              <button class="btn btn-outline-primary" value="male">남성</button>
+              <button class="btn btn-outline-primary" value="female">여성</button>
+            </div>
+          </div>
+
+          <!-- 회원가입 7번째 화면 -->
+          <div class="container mt-5" id="section7" style="display: none;">
+            <h4 class="mb-4">독자님의 태어난 날을 알려주세요~^_^ 🐘</h4>
+            <div class="preference-buttons" id="categoryButtons7">
+              <input type="date" id="birth" value="today()"/>
+              <button class="btn btn-outline-primary" onclick="birthSelect()">다음</button>
+            </div>
+          </div>
+
+          <!-- 회원가입 8번째 화면 -->
+          <div class="container mt-5" id="section8" style="display: none;">
+            <h4 class="mb-4">회원가입~!</h4>
+            <div class="preference-buttons" id="categoryButtons8">
+
+              <div class="form-group mb-3">
+                <label class="form-label">닉네임</label>
+                <input type="text" id="nickname" class="form-control" placeholder="아이디">
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">아이디</label>
+                <input type="text" id="id" class="form-control" placeholder="아이디">
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">비밀번호</label>
+                <input type="password" id="password1" class="form-control" placeholder="비밀번호">
+              </div>
+              <div class="form-group mb-3">
+                <label class="form-label">비밀번호 확인</label>
+                <input type="password" id="password2" class="form-control" placeholder="비밀번호 확인">
+              </div>
+
+              <!-- <div class="row">
+                <div class="col-4">
+                  <div class="d-grid">
+                    <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                      <img src="../assets/images/authentication/google.svg" alt="img"> <span class="d-none d-sm-inline-block"> Google</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-grid">
+                    <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                      <img src="../assets/images/authentication/twitter.svg" alt="img"> <span class="d-none d-sm-inline-block"> Twitter</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-grid">
+                    <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted">
+                      <img src="../assets/images/authentication/facebook.svg" alt="img"> <span class="d-none d-sm-inline-block"> Facebook</span>
+                    </button>
+                  </div>
+                </div>
+              </div> -->
+
+              <button class="btn btn-outline-primary" onclick="joinSucess()">회원가입 완료</button>
+            </div>
+          </div>
 
 <!-- 
             <div class="d-flex justify-content-between align-items-end mb-4">
@@ -487,10 +562,8 @@
     .catch(err => console.error("Error fetching subcategories:", err));
   }
 
-<<<<<<< HEAD
-  // 4번째 카데고리 눌렀을 때
-=======
->>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
+  let selectedBookTitle = null;
+
   function fourCategory(button) {
   const selectedCategory = button.textContent;
   const selectedName = button.value;
@@ -499,27 +572,18 @@
   console.log("Selected category:", selectedCategory);
   console.log("selected name : ", selectedName);
 
-  document.getElementById('section3').style.display = 'none';
-  document.getElementById('section4').style.display = 'block';
+  document.getElementById('section4').style.display = 'none';
+  document.getElementById('section5').style.display = 'block';
 
   fetch(`/api/getFamousWorks?name=${encoded}`)
     .then(res => res.json())
     .then(({ works }) => {
-      const container = document.getElementById("categoryButtons4");
+      const container = document.getElementById("categoryButtons5");
       container.innerHTML = "";
 
-<<<<<<< HEAD
-      console.log(works);
-
       if (!Array.isArray(works) || works.length === 0) {
         container.innerHTML = "<p>관련 도서를 찾지 못했습니다.</p>";
         console.log("이미지 실패");
-
-=======
-      if (!Array.isArray(works) || works.length === 0) {
-        container.innerHTML = "<p>관련 도서를 찾지 못했습니다.</p>";
-        console.log("이미지 실패");
->>>>>>> 242a85446f79b0a5b1ba9ee23f842b582b875ea7
         return;
       }
 
@@ -528,16 +592,53 @@
         card.className = "book-card p-2";
         card.style = "width: 160px; display: inline-block; margin: 8px; text-align: center;";
 
-        const thumb = book.thumbnail || 'https://via.placeholder.com/128x192?text=No+Image';
-
         card.innerHTML = `
-          <img src="${thumb}" style="width: 100%; border-radius: 6px;">
+          <img src="${book.image}" style="width: 100%; border-radius: 6px;">
           <h6 class="mt-2">${book.title}</h6>
           <p style="font-size: 0.85rem; color: #555;">${book.author}</p>
         `;
 
+        card.className = "book-card p-2 hover-card";
+
+        card.addEventListener("click", () => {
+          selectedBookTitle = book.title;
+          console.log("선택된 책:", selectedBookTitle);
+
+          document.getElementById("section5").style.display = "none";
+          document.getElementById("section6").style.display = "block";
+          });
+
         container.appendChild(card);
       });
+
+      //const card = document.getElementsByClassName("book-card");
+
+      // // 클릭 시 선택된 책 정보를 서버로 POST
+      // card.addEventListener("click", () => {
+      //   favoriteBook = this.title;
+
+      //   document.getElementById('section5').style.display = 'none';
+      //   document.getElementById('section6').style.display = 'block';
+      //   // fetch("/api/saveSelectedBook", {
+      //   //   method: "POST",
+      //   //   headers: { "Content-Type": "application/json" },
+      //   //   body: JSON.stringify({
+      //   //     title: book.title,
+      //   //     author: book.author,
+      //   //     image: book.image,
+      //   //   }),
+      //   // })
+      //   //   .then(res => res.json())
+      //   //   .then(data => {
+      //   //     console.log("저장 완료:", data);
+      //   //     alert("책이 저장되었습니다!");
+      //   //   })
+      //   //   .catch(err => {
+      //   //     console.error("저장 실패:", err);
+      //   //     alert("저장 중 오류 발생");
+      //   //   });
+
+      // });
 
       console.log("도서 목록:", works);
     })
@@ -545,7 +646,68 @@
       console.error("Error fetching books:", err);
       document.getElementById("categoryButtons4").innerHTML = "<p>도서 불러오기 실패</p>";
     });
-}
+  }
+
+  let gender = null;
+
+  //성별 눌렀을 때
+  document.querySelectorAll('#categoryButtons6 button').forEach(btn => {
+    btn.addEventListener('click', function () {
+        gender = this.value;
+        console.log("선택된 성별:", gender);
+
+        //선택된 버튼 스타일 변경 (선택 효과)
+        document.querySelectorAll('#categoryButtons6 button').forEach(b => {
+        b.classList.remove('active');
+        });
+
+      this.classList.add('active');
+      document.getElementById('section6').style.display = 'none';
+      document.getElementById('section7').style.display = 'block';
+    });
+  });
+
+    let birth = null;
+
+    //생년월일 눌렀을 때
+    function birthSelect() {
+      birth = document.getElementById('birth').value;
+
+      document.getElementById('section7').style.display = 'none';
+      document.getElementById('section8').style.display = 'block';
+    }
+
+    let id = null;
+    let nickname = null;
+    let pw1 = null;
+
+    //아이디, 비밀번호 입력 후 
+    function joinSucess() {
+      id = document.getElementById('id').value;
+      nickname = document.getElementById('nickname').value;
+      pw1 = document.getElementById('password1').value;
+
+      const payload = { gender, birth, id, nickname, pw1 };
+
+      fetch("/api/saveUserInfo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log("저장 완료:", data);
+          document.getElementById('section7').style.display = 'none';
+          document.getElementById('section8').style.display = 'block';
+        })
+        .catch(err => {
+          console.error("저장 실패:", err);
+          alert("저장 중 오류 발생");
+        });
+
+      document.getElementById('section7').style.display = 'none';
+      document.getElementById('section8').style.display = 'block';
+    }
 
 </script>
 
