@@ -17,9 +17,26 @@ const categorys = new mongoose.Schema({
   class: { type: Number, required: true },
 });
 
+// ✅ User 스키마
+const users = new mongoose.Schema({
+  username: { type: String, required: true },
+  userage: { type: String, required: true },
+  nickname: { type: String, required: false },
+  email: { type: String, required: false },
+  passwordHash: { type: String, required: true },
+  profileImage: { type: String, required: false },
+  favoriteComs: { type: String, required: false },
+  favoriteBooks: { type: String, required: true },
+  favoriteCategorys: { type: String, required: false },
+  createAt: { type: String, required: true },
+  updatedAt: { type: String, required: false },
+  friends: { type: String, required: false },
+});
+const User = mongoose.model('users', users);
+
 // ✅ 각각 모델로 선언
 const Todo = mongoose.model("Todo", todoSchema);
 const Category = mongoose.model("categorys", categorys); //""안에 이름이 컬렉션 명이어야함
 
 // ✅ 객체로 내보내기
-module.exports = { Todo, Category };
+module.exports = { Todo, User, Category };
