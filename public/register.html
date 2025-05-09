@@ -30,6 +30,7 @@
       border-radius: 8px;
     }
   </style>
+
   <style>
     .hover-card {
       transition: all 0.2s ease;
@@ -44,6 +45,7 @@
       box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
     }
   </style>
+
 </head>
 <!-- [Head] end -->
 <!-- [Body] Start -->
@@ -180,6 +182,7 @@
               </div> -->
 
               <button class="btn btn-outline-primary" onclick="joinSucess()">회원가입 완료</button>
+
             </div>
           </div>
 
@@ -505,6 +508,7 @@
   function selectCategory(button) {
     const selectedCategory = button.textContent;
     const selectedNumber = button.value;
+
     console.log("Selected category:", selectedCategory);
     console.log("selected number : ", selectedNumber);
 
@@ -562,7 +566,9 @@
     .catch(err => console.error("Error fetching subcategories:", err));
   }
 
+
   let selectedBookTitle = null;
+
 
   function fourCategory(button) {
   const selectedCategory = button.textContent;
@@ -575,10 +581,13 @@
   document.getElementById('section4').style.display = 'none';
   document.getElementById('section5').style.display = 'block';
 
+
   fetch(`/api/getFamousWorks?name=${encoded}`)
     .then(res => res.json())
     .then(({ works }) => {
+
       const container = document.getElementById("categoryButtons5");
+
       container.innerHTML = "";
 
       if (!Array.isArray(works) || works.length === 0) {
@@ -592,8 +601,10 @@
         card.className = "book-card p-2";
         card.style = "width: 160px; display: inline-block; margin: 8px; text-align: center;";
 
+
         card.innerHTML = `
           <img src="${book.image}" style="width: 100%; border-radius: 6px;">
+
           <h6 class="mt-2">${book.title}</h6>
           <p style="font-size: 0.85rem; color: #555;">${book.author}</p>
         `;
@@ -640,12 +651,14 @@
 
       // });
 
+
       console.log("도서 목록:", works);
     })
     .catch(err => {
       console.error("Error fetching books:", err);
       document.getElementById("categoryButtons4").innerHTML = "<p>도서 불러오기 실패</p>";
     });
+
   }
 
   let gender = null;
@@ -718,6 +731,7 @@
       document.getElementById('section7').style.display = 'none';
       document.getElementById('section8').style.display = 'block';
     }
+
 
 </script>
 

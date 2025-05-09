@@ -1,7 +1,9 @@
 //mongo.js
 const mongoose = require("mongoose");
 const axios = require('axios');
+
 const { Todo, Category, User } = require("./models/todo");
+
 
 mongoose
   .connect(
@@ -76,9 +78,11 @@ exports.getThirdCategorys = getThirdCategorys;
 const OPENAI_API_KEY = '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';  // 여기에 본인의 API 키를 입력
 
 async function getFamousWorks(category) {
+
   const payload = {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: `"${category}" 주제로 한국에서 유명한 도서 8가지 제목만 알려줘 형식은 title:"title"` }],
+
     temperature: 0.7,
     max_tokens: 300 // 토큰 제한 걸기 (너무 많이 나오지 않도록)
   };
@@ -107,6 +111,7 @@ async function getFamousWorks(category) {
 
       return images;
 
+
     } catch (err) {
       if (err.response?.status === 429 && i < retries - 1) {
         console.log(`429 오류 발생. ${delay}ms 후 재시도 중...`);
@@ -121,6 +126,7 @@ async function getFamousWorks(category) {
       }
     }
   }
+
   return "유명 작품을 가져오는 데 실패했습니다.";
 }
 exports.getFamousWorks = getFamousWorks;
@@ -220,6 +226,7 @@ function saveSelectedBook(book) {
       const match = line.match(/title:\s*["“]?(.+?)["”]?$/i);
       if (match) currentBook.title = match[1].trim();
     } 
+
   });
 
   // 마지막 책 추가
@@ -250,4 +257,5 @@ const joinSuccess = async (req, res, next) => {
   }
 };
 exports.joinSuccess = joinSuccess;
+
 

@@ -31,6 +31,7 @@ app.get("/api/getFirstCategorys", mongoController.getFirstCategorys);
 app.get("/api/getSecondCategorys", mongoController.getSecondCategorys);
 app.get("/api/getThirdCategorys", mongoController.getThirdCategorys);
 
+
 app.get('/api/getFamousWorks', async (req, res) => {
   console.log("1", req.query.name);
   const category = req.query.name;
@@ -45,6 +46,7 @@ app.get('/api/getFamousWorks', async (req, res) => {
 });
 
 app.get('/api/saveSelectedBook', async (req, res) => {
+
   console.log("1", req.query.name);
   const category = req.query.name;
   console.log("1", category);
@@ -57,9 +59,11 @@ app.get('/api/saveSelectedBook', async (req, res) => {
   res.json({ works });
 });
 
+
 app.post("/api/saveUserInfo", async (req, res, next) => {
   await mongoController.joinSuccess(req, res, next);
 });
+
 
 
 // 서버 시작
