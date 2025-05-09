@@ -1,7 +1,9 @@
 //mongo.js
 const mongoose = require("mongoose");
 const axios = require('axios');
-const { Todo, Category } = require("./models/todo");
+
+const { Todo, Category, User } = require("./models/todo");
+
 
 mongoose
   .connect(
@@ -79,7 +81,8 @@ async function getFamousWorks(category) {
 
   const payload = {
     model: "gpt-3.5-turbo",
-    messages: [{ role: "user", content: `${category} 주제로 어울리는 도서 8가지 추천해줘 응답은 title: "title", author: "author", isbn: "isbn" 이런 형식으로` }],
+    messages: [{ role: "user", content: `"${category}" 주제로 한국에서 유명한 도서 8가지 제목만 알려줘 형식은 title:"title"` }],
+
     temperature: 0.7,
     max_tokens: 300 // 토큰 제한 걸기 (너무 많이 나오지 않도록)
   };
@@ -103,10 +106,11 @@ async function getFamousWorks(category) {
       const books = parseBooks(result);
       console.log("parseBooks :" , books);
 
-      const imagesAdd = fetchBookCovers(books);
-      console.log("images :", imagesAdd);
+      const images = fetchAllBooks(books);
+      console.log("html 전송값",images);
 
-      return imagesAdd;
+      return images;
+
 
     } catch (err) {
       if (err.response?.status === 429 && i < retries - 1) {
@@ -144,52 +148,114 @@ function parseBooks(text) {
       }
       const match = line.match(/title:\s*["“]?(.+?)["”]?$/i);
       if (match) currentBook.title = match[1].trim();
-    } else if (line.toLowerCase().startsWith('author:')) {
-      const match = line.match(/author:\s*(.+)/i);
-      if (match) currentBook.author = match[1].trim();
-    } else if (line.toLowerCase().startsWith('isbn:')) {
-      const match = line.match(/isbn:\s*([\d\-]+)/i);
-      if (match) currentBook.isbn = match[1].replace(/-/g, '').trim();
-    }
+    } 
   });
 
   // 마지막 책 추가
   if (Object.keys(currentBook).length) {
     books.push(currentBook);
   }
-
   return books;
 }
 
-// Google Books API를 이용해 이미지 가져오기
-async function fetchBookCovers(books) {
-  const results = [];
+//네이버 api
+async function searchBook(title) {
+  const url = "https://openapi.naver.com/v1/search/book.json";
+  const headers = {
+    "X-Naver-Client-Id": "Jt9fIh27bUfekPfQ5IPj",
+    "X-Naver-Client-Secret": "MpFUsfvpZ4",
+  };
 
-  for (const book of books) {
-    const apiUrl = `https://www.googleapis.com/books/v1/volumes?q=isbn:${book.isbn}`;
+  const params = {
+    query: title,
+    display: 1,
+  };
 
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
+  try {
+    const response = await axios.get(url, { params, headers });
+    const item = response.data.items[0];
 
-      if (data.totalItems > 0) {
-        const volumeInfo = data.items[0].volumeInfo;
-        const thumbnail = volumeInfo.imageLinks?.thumbnail || null;
-
-        results.push({
-          title: book.title,
-          author: book.author,
-          isbn: book.isbn,
-          thumbnail
-        });
-      } else {
-        results.push({ ...book, thumbnail: null });
-      }
-    } catch (error) {
-      console.error(`Error fetching book with ISBN ${book.isbn}:`, error);
-      results.push({ ...book, thumbnail: null });
+    if (!item) {
+      console.warn(`❗ No result for "${title}"`);
+      return null;
     }
+
+    return {
+      title: item.title.replace(/<[^>]+>/g, ""),
+      author: item.author,
+      isbn: item.isbn.split(' ')[1],
+      image: item.image,
+      description: item.description,
+      link: item.link
+    };
+  } catch (error) {
+    console.error(`❌ Error searching "${title}":`, error.message);
+    return null;
   }
-  console.log("fetchBook :", results);
-  return results;
 }
+exports.searchBook = searchBook;
+
+async function fetchAllBooks(titles) {
+  const results = await Promise.all(
+    titles
+      .filter(item => item && item.title) // title이 있는 항목만
+      .map(item => searchBook(item.title))
+  );
+
+  const validResults = results.filter(Boolean); // null 제거
+
+  console.log(validResults);
+  return validResults;
+}
+
+//마지막으로 선택된 도서 DB에 저장
+function saveSelectedBook(book) {
+  const books = [];
+  const lines = text.trim().split('\n');
+
+  let currentBook = {};
+
+  lines.forEach(line => {
+    line = line.trim();
+
+    if (/^\d+\.\s*title:/i.test(line)) {
+      if (Object.keys(currentBook).length) {
+        books.push(currentBook);
+        currentBook = {};
+      }
+      const match = line.match(/title:\s*["“]?(.+?)["”]?$/i);
+      if (match) currentBook.title = match[1].trim();
+    } 
+
+  });
+
+  // 마지막 책 추가
+  if (Object.keys(currentBook).length) {
+    books.push(currentBook);
+  }
+  return books;
+}
+exports.saveSelectedBook = saveSelectedBook;
+
+
+const joinSuccess = async (req, res, next) => {
+
+  try {
+    const { userid, userage, nickname, gender, password, favoriteBooks, createdAt } = req.body;
+
+    if (!gender || !userage) {
+      return res.status(400).json({ error: "모든 필드를 입력하세요." });
+    }
+
+    const user = new User({ userid, userage, nickname, gender, password, favoriteBooks, createdAt });
+    await user.save();
+
+    res.status(200).json({ message: "성공적으로 저장되었습니다." });
+  } catch (err) {
+    console.error("DB 저장 오류:", err);
+    res.status(500).json({ error: "서버 오류" });
+  }
+};
+exports.joinSuccess = joinSuccess;
+
+
