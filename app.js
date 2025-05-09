@@ -9,6 +9,9 @@ const { Console } = require('console');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json()); // ← JSON 본문 파싱 필수
+app.use(express.urlencoded({ extended: true }));
 
 
 // 루트 경로에서 index.html 제공
@@ -54,9 +57,8 @@ app.get('/api/saveSelectedBook', async (req, res) => {
   res.json({ works });
 });
 
-app.post("/api/saveUserInfo", async (req, res) => {
-  const works = await mongoController.joinSuccess(req.body);
-  res.json({ works });
+app.post("/api/saveUserInfo", async (req, res, next) => {
+  await mongoController.joinSuccess(req, res, next);
 });
 
 

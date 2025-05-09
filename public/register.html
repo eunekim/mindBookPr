@@ -680,14 +680,24 @@
     let id = null;
     let nickname = null;
     let pw1 = null;
+    let createdAt = new Date();
 
     //아이디, 비밀번호 입력 후 
     function joinSucess() {
-      id = document.getElementById('id').value;
+      userid = document.getElementById('id').value;
+      userage = birth;
       nickname = document.getElementById('nickname').value;
-      pw1 = document.getElementById('password1').value;
+      gender = gender;
+      password = document.getElementById('password1').value;
+      favoriteBooks = selectedBookTitle;
+      
 
-      const payload = { gender, birth, id, nickname, pw1 };
+      const payload = { userid, userage, nickname , gender ,password, favoriteBooks, createdAt };
+      console.log("payload : " ,payload);
+      if (!gender || !birth) {
+        alert("성별과 생년월일을 선택하세요.");
+        return;
+      }
 
       fetch("/api/saveUserInfo", {
         method: "POST",
