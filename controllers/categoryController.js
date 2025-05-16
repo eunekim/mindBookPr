@@ -26,7 +26,7 @@ const getSecondCategorys = async (req, res, next) => {
     res.status(500).send("Server error");
   }
 };
-
+dsds
 //3번째 선호도 질문
 const getThirdCategorys = async (req, res, next) => {
   try {
