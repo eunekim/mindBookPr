@@ -4,7 +4,10 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 const bodyParser = require("body-parser");
-const mongoController = require("./database/mongo");
+const categoryController = require("./controllers/categoryController");
+const aiController = require('./controllers/aiController');
+const joinController = require('./controllers/joinController');
+const mongoose = require("./config/db");
 const { Console } = require('console');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,21 +30,21 @@ app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'register.html'));
 });
 
-app.get("/api/getFirstCategorys", mongoController.getFirstCategorys);
-app.get("/api/getSecondCategorys", mongoController.getSecondCategorys);
-app.get("/api/getThirdCategorys", mongoController.getThirdCategorys);
+app.get("/category/first", categoryController.getFirstCategorys);
+app.get("/category/second", categoryController.getSecondCategorys);
+app.get("/category/third", categoryController.getThirdCategorys);
 
 
 app.get('/api/getFamousWorks', async (req, res) => {
-  console.log("1", req.query.name);
-  const category = req.query.name;
+  console.log("api 불러오니?", req.query.category);
+  const category = req.query.category;
   console.log("1", category);
   if (!category) {
     return res.status(400).json({ error: 'Category is required' });
   }
 
   //mongo.js 함수로 카테고리 값 갖고 연결
-  const works = await mongoController.getFamousWorks(category);
+  const works = await aiController.getFamousWorksFromOpenAI(category);
   res.json({ works });
 });
 
@@ -61,7 +64,7 @@ app.get('/api/saveSelectedBook', async (req, res) => {
 
 
 app.post("/api/saveUserInfo", async (req, res, next) => {
-  await mongoController.joinSuccess(req, res, next);
+  await joinController.joinSuccess(req, res, next);
 });
 
 

@@ -481,7 +481,7 @@
 
 
 <script>
-  fetch("/api/getFirstCategorys")
+  fetch("/category/first")
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("categoryButtons2");
@@ -515,7 +515,7 @@
     document.getElementById('section2').style.display = 'none';
     document.getElementById('section3').style.display = 'block';
 
-    fetch(`/api/getSecondCategorys?number=${selectedNumber}`)
+    fetch(`/category/second?number=${selectedNumber}`)
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("categoryButtons3");
@@ -547,7 +547,7 @@
     document.getElementById('section3').style.display = 'none';
     document.getElementById('section4').style.display = 'block';
 
-    fetch(`/api/getThirdCategorys?number=${selectedNumber}&class=${selectedClass}`)
+    fetch(`/category/third?number=${selectedNumber}&class=${selectedClass}`)
     .then(res => res.json())
     .then(data => {
       const container = document.getElementById("categoryButtons4");
@@ -582,7 +582,7 @@
   document.getElementById('section5').style.display = 'block';
 
 
-  fetch(`/api/getFamousWorks?name=${encoded}`)
+  fetch(`/api/getFamousWorks?category=${encoded}`)
     .then(res => res.json())
     .then(({ works }) => {
 

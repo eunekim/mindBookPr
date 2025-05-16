@@ -1,84 +1,11 @@
-//mongo.js
-const mongoose = require("mongoose");
+//aiService.js
 const axios = require('axios');
 
-const { Todo, Category, User } = require("./models/todo");
-
-
-mongoose
-  .connect(
-    "mongodb+srv://keh8992:XmRCdTJR5A6wM84n@mindbook.oialmyx.mongodb.net/todos_test?retryWrites=true&w=majority&appName=MindBook"
-  )
-  .then(() => console.log("Connected to database!"))
-  .catch(() => console.log("Connection failed..."));
-
-const createTodo = async (req, res, next) => {
-  const newTodo = new Todo({
-    text: req.body.text,
-    isDone: req.body.isDone,
-    groupId: req.body.groupId,
-    dueDate: req.body.dueDate,
-    createDate: req.body.createDate,
-  });
-
-  const result = await newTodo.save();
-
-  res.json(result);
-};
-exports.createTodo = createTodo;
-
-//1번째 선호도 질문
-const getFirstCategorys = async (req, res, next) => {
-  const groupId = req.query.groupId;
-  const todos = await Category.find(
-    { class: 0 },
-    { name: 1, number : 1 , _id: 0 }
-  ).exec();
-  res.json(todos);
-};
-exports.getFirstCategorys = getFirstCategorys;
-
-//2번째 선호도 질문
-const getSecondCategorys = async (req, res, next) => {
-  try {
-    const parentNumber = parseInt(req.query.number, 10); // 대분류 값 number 받음
-    const subCategories = await Category.find(
-      { category: 0, number: parentNumber, class: { $ne: 0 } },
-      { name: 1, number: 1, class: 1, _id: 0 }
-    ).exec();
-
-    res.json(subCategories);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-exports.getSecondCategorys = getSecondCategorys;
-
-//3번째 선호도 질문
-const getThirdCategorys = async (req, res, next) => {
-  try {
-    const parentNumber = parseInt(req.query.number, 10); // 대분류 값 number 받음
-    const parentClass = parseInt(req.query.class, 10); // 중분류 값 class 받음
-
-    const subCategories = await Category.find(
-      { class: parentClass, number: parentNumber, category: 1 },
-      { name: 1, number: 1, class:1, _id: 0 }
-    ).exec();
-
-    res.json(subCategories);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error");
-  }
-};
-exports.getThirdCategorys = getThirdCategorys;
-
 // OpenAI API 키 설정
-const OPENAI_API_KEY = '***REMOVED***proj-QzOBkeBJ6Ji0iZVRKu7CWoIDWNPelBy1sZkBjzouZlXIDOhAbuLarQaQ6k2nEn3NBLJ_yQsjRFT3BlbkFJxZQYNHCJsdqiQCRJrJOTOITYu_AHuVaB9_2My2OcuvAaB0_MkUIO9qZtqwLZIHc3eW72YlkjIA';  // 여기에 본인의 API 키를 입력
+const OPENAI_API_KEY = '***REMOVED***proj-0rhhm_wkM0n9PYU0ziBGJbgDFPDaZ98IOcWFqyXxnU5EJplfFiGKawNvfijLJUu9ptrpGXSJNlT3BlbkFJ_IEvy4fAsiBqhBigUhNQWyFhxEaUi0KQdtju5D_sc8IFYFaYS7dhc4uCwNvwIasfCVDQ0a_OQA';  // 여기에 본인의 API 키를 입력
 
 async function getFamousWorks(category) {
-
+  console.log("getFamousWorks category :", category);
   const payload = {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: `"${category}" 주제로 한국에서 유명한 도서 8가지 제목만 알려줘 형식은 title:"title"` }],
@@ -95,7 +22,7 @@ async function getFamousWorks(category) {
       console.log("요청 내용:", JSON.stringify(payload, null, 2));
       const response = await axios.post("https://api.openai.com/v1/chat/completions", payload, {
         headers: {
-          Authorization: `Bearer ***REMOVED***proj-QzOBkeBJ6Ji0iZVRKu7CWoIDWNPelBy1sZkBjzouZlXIDOhAbuLarQaQ6k2nEn3NBLJ_yQsjRFT3BlbkFJxZQYNHCJsdqiQCRJrJOTOITYu_AHuVaB9_2My2OcuvAaB0_MkUIO9qZtqwLZIHc3eW72YlkjIA`, // 키는 생략 처리
+          Authorization: `Bearer ***REMOVED***proj-0rhhm_wkM0n9PYU0ziBGJbgDFPDaZ98IOcWFqyXxnU5EJplfFiGKawNvfijLJUu9ptrpGXSJNlT3BlbkFJ_IEvy4fAsiBqhBigUhNQWyFhxEaUi0KQdtju5D_sc8IFYFaYS7dhc4uCwNvwIasfCVDQ0a_OQA`, // 키는 생략 처리
           "Content-Type": "application/json",
         },
       });
@@ -106,7 +33,7 @@ async function getFamousWorks(category) {
       const books = parseBooks(result);
       console.log("parseBooks :" , books);
 
-      const images = fetchAllBooks(books);
+      const images = await fetchAllBooks(books);
       console.log("html 전송값",images);
 
       return images;
@@ -195,6 +122,7 @@ async function searchBook(title) {
 }
 exports.searchBook = searchBook;
 
+
 async function fetchAllBooks(titles) {
   const results = await Promise.all(
     titles
@@ -236,26 +164,3 @@ function saveSelectedBook(book) {
   return books;
 }
 exports.saveSelectedBook = saveSelectedBook;
-
-
-const joinSuccess = async (req, res, next) => {
-
-  try {
-    const { userid, userage, nickname, gender, password, favoriteBooks, createdAt } = req.body;
-
-    if (!gender || !userage) {
-      return res.status(400).json({ error: "모든 필드를 입력하세요." });
-    }
-
-    const user = new User({ userid, userage, nickname, gender, password, favoriteBooks, createdAt });
-    await user.save();
-
-    res.status(200).json({ message: "성공적으로 저장되었습니다." });
-  } catch (err) {
-    console.error("DB 저장 오류:", err);
-    res.status(500).json({ error: "서버 오류" });
-  }
-};
-exports.joinSuccess = joinSuccess;
-
-
