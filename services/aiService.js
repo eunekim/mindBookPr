@@ -2,7 +2,7 @@
 const axios = require('axios');
 
 // OpenAI API 키 설정
-const OPENAI_API_KEY = '***REMOVED***proj-0rhhm_wkM0n9PYU0ziBGJbgDFPDaZ98IOcWFqyXxnU5EJplfFiGKawNvfijLJUu9ptrpGXSJNlT3BlbkFJ_IEvy4fAsiBqhBigUhNQWyFhxEaUi0KQdtju5D_sc8IFYFaYS7dhc4uCwNvwIasfCVDQ0a_OQA';  // 여기에 본인의 API 키를 입력
+const OPENAI_API_KEY = 'api키';  // 여기에 본인의 API 키를 입력
 
 async function getFamousWorks(category) {
   console.log("getFamousWorks category :", category);
@@ -22,7 +22,7 @@ async function getFamousWorks(category) {
       console.log("요청 내용:", JSON.stringify(payload, null, 2));
       const response = await axios.post("https://api.openai.com/v1/chat/completions", payload, {
         headers: {
-          Authorization: `Bearer ***REMOVED***proj-0rhhm_wkM0n9PYU0ziBGJbgDFPDaZ98IOcWFqyXxnU5EJplfFiGKawNvfijLJUu9ptrpGXSJNlT3BlbkFJ_IEvy4fAsiBqhBigUhNQWyFhxEaUi0KQdtju5D_sc8IFYFaYS7dhc4uCwNvwIasfCVDQ0a_OQA`, // 키는 생략 처리
+          Authorization: `Bearer api키`, // 키는 생략 처리
           "Content-Type": "application/json",
         },
       });
